@@ -1,4 +1,5 @@
 var Proxy = require('./lib/proxy')
+  , f = require('util').format
   , fs = require('fs');
 
 // Start the 
@@ -71,4 +72,8 @@ if(argv.h) return console.log(yargs.help())
 var options = parseOptions(argv);
 
 // Create and start the proxy
-new Proxy(options).start();
+var proxy = new Proxy(options);
+proxy.start(function(){
+  if(proxy.logger.isInfo())
+    proxy.logger.info(f('mongodb-proxy running on %s:%s', options.bind_to, options.port));
+});
